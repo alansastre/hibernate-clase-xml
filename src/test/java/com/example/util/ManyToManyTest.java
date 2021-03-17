@@ -83,4 +83,72 @@ public class ManyToManyTest {
     }
 
 
+    @Test
+    @DisplayName("Delete project from Employee")
+    public void deleteProjectFromEmployee() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Project project1 = new Project("Proyecto 1", "PRJ1", "Proyecto Fin de curso Frontend");
+        Project project2 = new Project("Proyecto 2", "PRJ2", "Proyecto Fin de curso Backend");
+        Project project3 = new Project("Proyecto 3", "PRJ3", "Proyecto Fin de curso Full stack");
+        Employee employee1 = new Employee("Employee 1", 33, true, 30000D, Instant.now());
+        Employee employee2 = new Employee("Employee 2", 33, true, 30000D, Instant.now());
+        employee1.getProjects().add(project1);
+        employee1.getProjects().add(project2);
+        employee1.getProjects().add(project3);
+
+        session.save(employee1);
+        session.save(project1);
+        session.save(project2);
+        session.save(project3);
+
+        session.getTransaction().commit();
+        session.close();
+
+        System.out.println("=================================");
+        session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Employee employee = session.find(Employee.class, employee1.getId());
+        employee.getProjects().remove(0); // Desasociar el primer project
+        session.save(employee);
+        session.getTransaction().commit();
+        session.close();
+
+    }
+
+    @Test
+    @DisplayName("Delete Employee From Project")
+    public void deleteEmployeeFromProject() {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Project project1 = new Project("Proyecto 1", "PRJ1", "Proyecto Fin de curso Frontend");
+        Project project2 = new Project("Proyecto 2", "PRJ2", "Proyecto Fin de curso Backend");
+        Project project3 = new Project("Proyecto 3", "PRJ3", "Proyecto Fin de curso Full stack");
+        Employee employee1 = new Employee("Employee 1", 33, true, 30000D, Instant.now());
+        Employee employee2 = new Employee("Employee 2", 33, true, 30000D, Instant.now());
+        employee1.getProjects().add(project1);
+        employee1.getProjects().add(project2);
+        employee1.getProjects().add(project3);
+
+        session.save(employee1);
+        session.save(project1);
+        session.save(project2);
+        session.save(project3);
+
+        session.getTransaction().commit();
+        session.close();
+
+        System.out.println("=================================");
+        session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Project project1DB = session.find(Project.class, project1.getId());
+        project1DB.getEmployees().remove(0); // Desasociar el primer employee
+        session.save(project1DB);
+        session.getTransaction().commit();
+        session.close();
+
+    }
+
+
 }
