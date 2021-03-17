@@ -67,14 +67,25 @@ public class OneToOneTest {
         session.close();
 
         System.out.println("************************************");
-        // 1 - Find employee y verificar que trae la direccion
         session = HibernateUtil.getSessionFactory().openSession();
-        Direction directionDB = session.find(Direction.class, direction.getId());
+
+        // 1 - Find employee y verificar que trae la direccion
+        Employee employeeDB = session.find(Employee.class, employee.getId());
+        // System.out.println(employeeDB.getDirection());
+
+
+        // session.evict(employeeDB.getDirection()); // Forzar que haga de nuevo el select en database
+        // 2 - Find direction y verificar que trae el empleado
+        // session.evict(employeeDB);
+        Direction directionDB = session.find(Direction.class, direction.getId()); // Si no hacemos el evict no lo consula, lo saca de caché
         System.out.println(directionDB.getEmployee());
 
-        // 2 - Find direction y verificar que trae el empleado
+        session.close();
 
-
+        session = HibernateUtil.getSessionFactory().openSession();
+        Employee employeeDB2 = session.find(Employee.class, employee.getId());
+        System.out.println(directionDB.getEmployee());
+        session.close();
 
     }
 }

@@ -31,6 +31,12 @@ public class Employee {
     @JoinColumn(name = "id_direction") // nueva columna
     private Direction direction;
 
+//    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne()
+    @JoinColumn(name = "id_company", nullable = false)
+    private Company company;
+
+
     public Employee() {
     }
 
@@ -98,6 +104,14 @@ public class Employee {
         this.direction = direction;
     }
 
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
@@ -109,4 +123,6 @@ public class Employee {
                 ", createdDate=" + createdDate +
                 '}';
     }
+
+
 }

@@ -26,5 +26,6 @@
 <!--        Entidades-->
         <mapping class="com.example.model.Direction" />
         <mapping class="com.example.model.Employee" />
+        <mapping class="com.example.model.Company" />
     </session-factory>
 </hibernate-configuration>

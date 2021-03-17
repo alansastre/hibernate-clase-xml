@@ -19,7 +19,7 @@ public class Direction {
 
     private String country;
 
-    @OneToOne(mappedBy = "direction")
+    @OneToOne(mappedBy = "direction") // bidireccional
     private Employee employee;
 
 
