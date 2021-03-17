@@ -1,6 +1,8 @@
 package com.example.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="projects")
@@ -8,7 +10,6 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
 
     private String name;
@@ -17,10 +18,9 @@ public class Project {
 
     private String description;
 
-
-
-    // TODO - add employee relationship ManyToMany
-
+    // Bidireccional
+    @ManyToMany(mappedBy = "projects", fetch = FetchType.EAGER)
+    private List<Employee> employees = new ArrayList<>();
 
     public Project() {
     }
@@ -61,6 +61,14 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 
     @Override

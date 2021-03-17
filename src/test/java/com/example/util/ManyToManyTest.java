@@ -15,13 +15,9 @@ public class ManyToManyTest {
     @DisplayName("createProjects")
     public void createProjects() {
 
-
-
-
         Session session = HibernateUtil.getSessionFactory().openSession();
 
         session.beginTransaction();
-
 
         // session.createQuery("from Employee e where e.projects")
 
@@ -29,10 +25,8 @@ public class ManyToManyTest {
         Project project2 = new Project("Proyecto 2", "PRJ2", "Proyecto Fin de curso Backend");
         Project project3 = new Project("Proyecto 3", "PRJ3", "Proyecto Fin de curso Full stack");
 
-
         Employee employee1 = new Employee("Employee 1", 33, true, 30000D, Instant.now());
         Employee employee2 = new Employee("Employee 2", 33, true, 30000D, Instant.now());
-
 
         employee1.getProjects().add(project1);
         employee1.getProjects().add(project2);
@@ -50,7 +44,43 @@ public class ManyToManyTest {
 
         session.getTransaction().commit();
 
+    }
 
+    @Test
+    @DisplayName("createProjectBidirectional")
+    public void createProjectBidirectional() {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        session.beginTransaction();
+
+        Project project1 = new Project("Proyecto 1", "PRJ1", "Proyecto Fin de curso Frontend");
+        Project project2 = new Project("Proyecto 2", "PRJ2", "Proyecto Fin de curso Backend");
+        Project project3 = new Project("Proyecto 3", "PRJ3", "Proyecto Fin de curso Full stack");
+
+        Employee employee1 = new Employee("Employee 1", 33, true, 30000D, Instant.now());
+        Employee employee2 = new Employee("Employee 2", 33, true, 30000D, Instant.now());
+
+        // project1.getEmployees().add(employee1); // not owner
+        employee1.getProjects().add(project1); // owner
+
+        session.save(employee1);
+        session.save(project1);
+
+        session.getTransaction().commit();
+        session.close();
+
+        System.out.println("=================================");
+        session = HibernateUtil.getSessionFactory().openSession();
+        Project project1DB = session.find(Project.class, project1.getId());
+        System.out.println(project1DB);
+        System.out.println(project1DB.getEmployees()); // LAZY - hace un segundo select para recuperar employees
+
+
+        System.out.println(project1DB.getEmployees().get(0));
+        session.close();
 
     }
+
+
 }

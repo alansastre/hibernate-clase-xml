@@ -89,6 +89,7 @@ public class ManyToOne {
 
         session.beginTransaction();
 
+        // nullable = false
 //        company.getEmployees().add(employee1);
 //        company.getEmployees().add(employee2);
 //        company.getEmployees().add(employee3);
@@ -110,6 +111,10 @@ public class ManyToOne {
         session.getTransaction().commit();
         session.close();
 
+
+
+        // TEST: EAGER Y LAZY *******************************
+        
         // Recuperar company y comprobar que trae los empleados
 
         session = HibernateUtil.getSessionFactory().openSession();

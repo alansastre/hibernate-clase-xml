@@ -1,5 +1,7 @@
 package com.example.model;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,8 @@ public class Company {
 //    @OneToMany(mappedBy = "company")
 //    private List<Employee> employees = new ArrayList<>();
     @OneToMany(mappedBy = "company")
+    @Where(clause = "married = 1")
+    @OrderBy("name")
     private List<Employee> employees = new ArrayList<>();
 
 

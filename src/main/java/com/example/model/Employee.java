@@ -41,8 +41,11 @@ public class Employee {
 
     @ManyToMany
     @JoinTable(
+            // nombre de la nueva tabla auxiliar
             name = "employee_project",
+            // nombre de la primera nueva columna de la tabla de la entidad actual (Employee)
             joinColumns = {@JoinColumn(name="employee_id", referencedColumnName = "id")},
+            // nombre de la segunda nueva columna de la tabla de la entidad relacionada (Project)
             inverseJoinColumns = {@JoinColumn(name="project_id", referencedColumnName = "id")}
     )
     private List<Project> projects = new ArrayList<>();
