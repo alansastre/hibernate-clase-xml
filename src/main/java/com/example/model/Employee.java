@@ -3,6 +3,8 @@ package com.example.model;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="employees")
@@ -33,9 +35,17 @@ public class Employee {
 
 //    @ManyToOne(cascade = {CascadeType.ALL})
     @ManyToOne()
-    @JoinColumn(name = "id_company", nullable = false)
+    // @JoinColumn(name = "id_company", nullable = false)
+    @JoinColumn(name = "id_company")
     private Company company;
 
+    @ManyToMany
+    @JoinTable(
+            name = "employee_project",
+            joinColumns = {@JoinColumn(name="employee_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name="project_id", referencedColumnName = "id")}
+    )
+    private List<Project> projects = new ArrayList<>();
 
     public Employee() {
     }
@@ -110,6 +120,14 @@ public class Employee {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 
     @Override
