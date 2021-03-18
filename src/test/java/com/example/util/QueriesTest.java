@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -90,8 +91,92 @@ public class QueriesTest {
         session.close();
     }
 
+    @Test
+    @DisplayName("Query One employee by id")
+    public void findOneEmployeeById() {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Company> criteria = builder.createQuery(Company.class);
+        Root<Company> root = criteria.from(Company.class);
+
+        criteria.select(root);
+
+        criteria.where(builder.equal(root.get("id"), 2L));
+
+        // Opcion 1
+        // List<Company> companies = session.createQuery(criteria).list();
+        // System.out.println(companies);
+
+        // Opcion 2
+        Company company = session.createQuery(criteria).getSingleResult();
+        System.out.println(company);
+        session.close();
+    }
 
 
+    @Test
+    @DisplayName("Find All Where like ")
+    public void findAllWhereLike() {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Employee> criteria = builder.createQuery(Employee.class);
+        Root<Employee> root = criteria.from(Employee.class);
+        criteria.select(root);
+
+        criteria.where(builder.like(root.get("name"), "A%"));
+
+        List<Employee> employees = session.createQuery(criteria).list();
+        employees.forEach(employee -> System.out.println(employee.getName()));
+        //System.out.println(employees);
+
+        session.close();
+
+    }
+
+
+    @Test
+    @DisplayName("Find All Greater ")
+    public void findAllGreater() {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Employee> criteria = builder.createQuery(Employee.class);
+        Root<Employee> root = criteria.from(Employee.class);
+        criteria.select(root);
+
+        criteria.where(builder.gt(root.get("age"), 20));
+
+        List<Employee> employees = session.createQuery(criteria).list();
+        employees.forEach(employee -> System.out.println(employee.getName()));
+
+        session.close();
+
+    }
+
+    @Test
+    @DisplayName("Find All Between ")
+    public void findAllBetween() {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Employee> criteria = builder.createQuery(Employee.class);
+        Root<Employee> root = criteria.from(Employee.class);
+        criteria.select(root);
+
+        criteria.where(builder.between(root.get("age"), 20, 30));
+
+        List<Employee> employees = session.createQuery(criteria).list();
+        employees.forEach(employee -> System.out.println(employee.getName()));
+
+        session.close();
+
+    }
 
 
 
