@@ -28,6 +28,7 @@
         <mapping class="com.example.model.Employee" />
         <mapping class="com.example.model.Company" />
         <mapping class="com.example.model.Project" />
+        <mapping class="com.example.model.CreditCard" />
 
     </session-factory>
 </hibernate-configuration>

@@ -21,10 +21,22 @@ public class Company {
 //   @OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
 //    @OneToMany(mappedBy = "company")
 //    private List<Employee> employees = new ArrayList<>();
+
+    // Opción 1 - OneToMany bidireccional, con columna extra en la tabla Employee
     @OneToMany(mappedBy = "company")
     @Where(clause = "married = 1")
     @OrderBy("name")
     private List<Employee> employees = new ArrayList<>();
+
+    // Opción 2 - OneToMany una tabla separada
+    @OneToMany
+    @JoinTable(
+            name = "company_creditcard",
+            joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name="creditcard_id", referencedColumnName = "id")
+    )
+    private List<CreditCard> creditCards = new ArrayList<>();
+
 
 
     public Company() {
@@ -67,6 +79,13 @@ public class Company {
         this.employees = employees;
     }
 
+    public List<CreditCard> getCreditCards() {
+        return creditCards;
+    }
+
+    public void setCreditCards(List<CreditCard> creditCards) {
+        this.creditCards = creditCards;
+    }
 
     @Override
     public String toString() {
