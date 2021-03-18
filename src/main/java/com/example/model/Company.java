@@ -29,7 +29,7 @@ public class Company {
     private List<Employee> employees = new ArrayList<>();
 
     // Opción 2 - OneToMany unidireccional una tabla separada
-    @OneToMany
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinTable(
             name = "company_creditcard",
             joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"),
