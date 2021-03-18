@@ -28,7 +28,7 @@ public class Company {
     @OrderBy("name")
     private List<Employee> employees = new ArrayList<>();
 
-    // Opción 2 - OneToMany una tabla separada
+    // Opción 2 - OneToMany unidireccional una tabla separada
     @OneToMany
     @JoinTable(
             name = "company_creditcard",
@@ -37,7 +37,10 @@ public class Company {
     )
     private List<CreditCard> creditCards = new ArrayList<>();
 
-
+    // Opción 3 - OneToMany unidireccional, con columna extra en la tabla Employee
+    @OneToMany()
+    @JoinColumn(name = "company_id")
+    List<Department> departments = new ArrayList<>();
 
     public Company() {
     }
@@ -85,6 +88,14 @@ public class Company {
 
     public void setCreditCards(List<CreditCard> creditCards) {
         this.creditCards = creditCards;
+    }
+
+    public List<Department> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(List<Department> departments) {
+        this.departments = departments;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.util;
 
 import com.example.model.Company;
 import com.example.model.CreditCard;
+import com.example.model.Department;
 import org.hibernate.Session;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,8 @@ public class OneToMany {
 
 
     @Test
-    @DisplayName("Test name")
-    public void testName() {
+    @DisplayName("One to many company - credit cards with new table")
+    public void checkCompanyCreditCards() {
 
         Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -41,7 +42,39 @@ public class OneToMany {
         // hacer efectivos los cambios en la base de datos
         session.getTransaction().commit();
 
-
-
     }
+
+
+    @Test
+    @DisplayName("Check company with departments one column")
+    public void checkCompanyWithDepartmentsOneColumn() {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        // creamos entidades
+
+        // 2 libros
+        Department department1 = new Department();
+        department1.setName("dep1");
+        Department department2 = new Department();
+        department2.setName("dep2");
+
+        // 1 editorial
+        Company company = new Company("Empresa OneToMany","B55544433");
+
+        // relacionar entidades
+        company.getDepartments().add(department1);
+        company.getDepartments().add(department2);
+
+        session.beginTransaction(); // abrimos transaccion
+
+        // persistir datos
+        session.save(department1);
+        session.save(department2);
+        session.save(company);
+
+        // hacer efectivos los cambios en la base de datos
+        session.getTransaction().commit();
+    }
+
 }
