@@ -23,9 +23,9 @@ public class Company {
 //    private List<Employee> employees = new ArrayList<>();
 
     // Opción 1 - OneToMany bidireccional, con columna extra en la tabla Employee
-    @OneToMany(mappedBy = "company")
-    @Where(clause = "married = 1")
-    @OrderBy("name")
+    @OneToMany(mappedBy = "company") // Por defecto es LAZY
+    // @Where(clause = "married = 1")
+    // @OrderBy("name")
     private List<Employee> employees = new ArrayList<>();
 
     // Opción 2 - OneToMany unidireccional una tabla separada
@@ -104,6 +104,7 @@ public class Company {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", cif='" + cif + '\'' +
+                ", employees='" + employees.size() + '\'' +
                 '}';
     }
 }

@@ -369,14 +369,57 @@ public class QueriesTest {
 
         Session session = HibernateUtil.getSessionFactory().openSession();
 
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaDelete<Employee> criteria = builder.createCriteriaDelete(Employee.class);
+        Root<Employee> root = criteria.from(Employee.class);
 
+        criteria.where(builder.lt(root.get("age"), 30L));
+
+        session.beginTransaction();
+
+        session.createQuery(criteria).executeUpdate();
+
+        session.getTransaction().commit();
 
     }
 
-
-
-
     // fetch join
+
+    @Test
+    @DisplayName("Test name")
+    public void testName() {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Company> criteria = builder.createQuery(Company.class);
+        Root<Company> root = criteria.from(Company.class);
+
+        root.fetch("employees", JoinType.INNER);
+
+        criteria.select(root).distinct(true);
+
+        List<Company> companies = session.createQuery(criteria).list();
+        System.out.println(companies);
+
+    }
+
+    @Test
+    @DisplayName("filter id in employee list")
+    public void idInListEmployees() {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+
+        Query<Company> query = session.createQuery("select distinct company from Company company inner join fetch company.employees e where e.id in :ids", Company.class);
+        query.setParameter("ids", Arrays.asList(1L, 2L, 3L));
+
+        List<Company> companies = query.list();
+        System.out.println(companies);
+        System.out.println(companies.get(0).getEmployees());
+
+        session.close();
+    }
 
 
 
